@@ -702,12 +702,10 @@ class Chargepoint(ChargepointRfidMixin):
             # OCPP Start Transaction nach Anstecken
             if ((self.data.get.plug_state and self.data.set.plug_state_prev is False) or
                     (self.data.set.ocpp_transaction_id is None and self.data.get.charge_state)):
-                        
-                # only start OCPP transaction if chargebox ID is not none
-                if (self.data.config.ocpp_chargebox_id is not None):
-                    # only start OCPP transaction if rfid tag or vehicle ID is set
+                # Starte nur Transaction wenn auch die chargepoint ID im Backend gesetzt wurde
+                if self.data.config.ocpp_chargebox_id:
+                    # Starte nur Transaction wenn bereits ein RFID Tag oder die Fahrzeug ID erkannt wurde
                     if (self.data.set.rfid or self.data.get.rfid or self.data.get.vehicle_id):
-                        
                         self.data.set.ocpp_transaction_id = data.data.optional_data.start_transaction(
                             self.data.config.ocpp_chargebox_id,
                             self.chargepoint_module.fault_state,

@@ -20,6 +20,7 @@ def mock_data() -> None:
 def test_start_transaction(mock_data, monkeypatch):
     cp = Chargepoint(1, None)
     cp.data.config.ocpp_chargebox_id = "cp1"
+    cp.data.set.rfid = "ABCDEF01234567"
     cp.data.get.plug_state = True
     cp.template = CpTemplate()
     cp.chargepoint_module = ChargepointModule(Mqtt())
